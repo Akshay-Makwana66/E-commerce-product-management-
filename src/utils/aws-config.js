@@ -14,14 +14,14 @@ let uploadFile = async(file) => {
             ACL: "public-read",
             Bucket: "classroom-training-bucket",  
             Key: "group40/" + file.originalname,  
-            Body: file.buffer
+            Body: file.buffer 
         };
         // Callback - function provided as the second parameter ( most oftenly)
         s3.upload(uploadParams, function(err, data) {
             if (err) {
                 return reject({ "error": err });
             }
-            // console.log(data)
+            // console.log(data) 
             console.log(`File uploaded successfully. ${data.Location}`);
             return resolve(data.Location);
         });

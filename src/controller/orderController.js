@@ -54,7 +54,7 @@ const createOrder = async  (req, res) => {
             return res.status(404).send({ status: false, message: "Cart doesn't exist" })
         }
 
-        if (!checkCart.items.length) {
+        if (!checkCart.items.length) {    
             return res.status(400).send({ status: false, message: "Please add some product in cart to make an order" });
         }
 
@@ -77,7 +77,7 @@ const createOrder = async  (req, res) => {
                     totalItems: 0,
                 },
             })
-        };
+        };                                                                                                              
         return res.status(201).send({ status: true, message: "Order placed successfully.", data: createOrder });
 
     } catch (err) {
@@ -89,7 +89,7 @@ const createOrder = async  (req, res) => {
 
 
 
-/**********************************************UPDATE CART API*******************************************/
+/**********************************************UPDATE ORDER API*******************************************/
 
 
 
@@ -119,7 +119,7 @@ const updateOrder = async (req, res) => {
         if (status == 'pending') {
             return res.status(400).send({ status: false, message: "status can not be pending during updation" })
         }
-
+        
 
         let findOrder = await orderModel.findOne({ _id: orderId, isDeleted:false,userId: userId })
         if (!findOrder) {

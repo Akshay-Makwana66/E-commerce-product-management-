@@ -8,11 +8,11 @@ const Authentication = function (req, res, next) {
   try {
     if(!req.headers.authorization) {
         return res.status(401).send({ status: false, message: "Missing authentication token in request " });
-      }
+      }   
 
-    let token = req.headers.authorization.split(" ")[1]
+    let token = req.headers.authorization.split(",")[1]
 
-    const decoded = jwt.decode(token);
+    const decoded = jwt.decode(token);   
    
     if (!decoded) {
       return res.status(401).send({ status: false, message: "Invalid authentication token in request headers " })
@@ -53,7 +53,7 @@ const Authorization = async (req,res,next) =>{
   if(user._id.toString()!==req.userId){
     return res.status(403).send({status: false,message: "Unauthorized access! User's info doesn't match"})
   }
-  next();
+  next();   
 }
 
 module.exports = {Authentication,Authorization}

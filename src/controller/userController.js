@@ -9,7 +9,7 @@ const saltRounds = 10;
 
 const registerUser = async (req, res) => {
   try {
-    let files = req.files;
+    let files = req.files;   
     let data = req.body;
 
     // VALIDATIONS STARTS
@@ -104,7 +104,7 @@ const registerUser = async (req, res) => {
     //ADDRESS VALIDATION
     if (!data.address || !isNaN(data.address)) {
       return res
-        .status(400)
+        .status(400)  
         .send({ status: false, message: "Valid address is required" });
     }
     address = JSON.parse(data.address);
@@ -200,7 +200,7 @@ const registerUser = async (req, res) => {
 
     if (files.length > 0) {
       if (!validator.validFormat(files[0].originalname)) {
-        return res
+        return res  
           .status(400)
           .send({ status: false, message: "only image format is accept" });
       }
@@ -217,8 +217,8 @@ const registerUser = async (req, res) => {
       .send({ status: true, message: "Data created", Data: savedData });
   } catch (err) {
     if (err instanceof SyntaxError) {
-      return res
-        .status(400)
+      return res 
+        .status(400)   
         .send({ status: false, message: "Address should be in Object format" });
     } else {
       return res
@@ -308,7 +308,6 @@ const getUserDetails = async (req, res) => {
       });
 
     const profile = await userModel.findOne({ _id: userId });
-    console.log(profile);
 
     if (!profile)
       return res.status(404).send({
@@ -464,10 +463,10 @@ const updateUser = async (req, res) => {
     let validateCity = /^[a-zA-Z0-9]/;
     let validatePincode = /^[1-9]{1}[0-9]{2}\s{0,1}[0-9]{3}$/;
 
-    if (Object.keys(data).includes("address")) {
+    if (Object.keys(data).includes("address")) {       
       let addr = JSON.parse(address)
      
-      if (addr) {
+      if (addr) {  
 
         if (typeof addr !== "object" || Array.isArray(addr) || Object.keys(addr).length == 0)
           return res.status(400).send({ status: false, message: "Address not in Valid Object Format..." });
@@ -515,26 +514,26 @@ const updateUser = async (req, res) => {
             if (!validator.isValidValue(pincode) || !validatePincode.test(pincode))
               return res.status(400).send({ status: false, message: "Invalid billing pincode" });
               profile.address.billing.pincode = pincode;
-          }
+          }   
         }
         updatedData["address"] = profile.address;
       }
     }
    
 
-    let modifiedData = await userModel.findByIdAndUpdate(
-      { _id: userId },
-      updatedData,
-      { new: true, upsert: true }
+    let modifiedData = await userModel.findOneAndUpdate(     
+      { _id: userId },  
+      updatedData,    
+      { new: true }  
     );
 
     return res.status(200).send({
       status: true,
-      message: "User profile updated",
+      message: "User profile updated",                 
       data: modifiedData,
     });
   } catch (error) {
-    if (error instanceof SyntaxError) {
+    if (error instanceof SyntaxError) {   
       return res
         .status(400)
         .send({

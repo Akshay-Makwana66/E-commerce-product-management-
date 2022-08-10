@@ -1,7 +1,7 @@
 const express=require("express");
 const mongoose=require("mongoose");
-const multer=require('multer')
-const {aws} = require('aws-sdk')
+const multer =require('multer')
+const aws = require('aws-sdk') 
 const route=require("./route/route");
 
 const app=express();
@@ -13,10 +13,10 @@ mongoose.connect("mongodb+srv://sangamsuman323:XVZrnDNPfS8c21p8@cluster0.bolaw.m
     useNewUrlParser:true
 })
 
-.then(()=>console.log("MongooDB Connected"))
+.then(()=>console.log("MongoDB is Connected"))
 .catch((error)=>console.log(error))
 
-app.use('/',route)
+app.use('/',route)                   
 
 
 app.listen(3000, function(){

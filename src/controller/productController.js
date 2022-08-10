@@ -4,7 +4,7 @@ const productModel = require("../model/productModel");
 
 
 
-/**********************************************GET PRODUCT BY ID API*******************************************/
+/**********************************************CREATE PRODUCT API*******************************************/
 
 const createProduct = async (req, res) => {
   try {
@@ -15,7 +15,7 @@ const createProduct = async (req, res) => {
       return res
         .status(400)
         .send({ status: false, message: "Body can not be empty" });
-    }
+    }        
     let {
       title,
       description,
@@ -205,11 +205,11 @@ const getProductsByFilters = async (req, res) => {
 
     const getFilter = Object.keys(data)
     if (getFilter.length) {
-      for (let value of getFilter) {
+      for (let value of getFilter) {  
         if (['size', 'name', 'priceGreaterThan', 'priceLessThan', 'priceSort'].indexOf(value) == -1)
           return res.status(400).send({ status: false, message: `You can't filter Using '${value}' ` })
       }
-    }
+    }        
 
     if (size) {
       let allowedSizes = ["S", "XS", "M", "X", "L", "XXL", "XL"];
@@ -222,7 +222,7 @@ const getProductsByFilters = async (req, res) => {
 
       size = size.toUpperCase();
 
-      let check = true;
+      let check = true;   
       let sizes = size
         .trim()
         .split(",")
@@ -253,7 +253,7 @@ const getProductsByFilters = async (req, res) => {
     }
 
     if (data.hasOwnProperty("priceGreaterThan")) {
-      if (Number(priceGreaterThan) == NaN) {
+      if (Number(priceGreaterThan) == NaN) {  
         return res.status(400).send({
           status: false,
           message: "priceGreaterThan should be a valid Number ",
@@ -266,11 +266,13 @@ const getProductsByFilters = async (req, res) => {
           message: "priceGreaterThan should be a greater than Zero ",
         });
       }
+
+
       if (!filterData.hasOwnProperty("price")) {
         filterData["price"] = {};
       }
       filterData["price"]["$gte"] = Number(priceGreaterThan);
-    }
+    }  
 
     if (data.hasOwnProperty("priceLessThan")) {
       if (Number(priceLessThan) == NaN) {
@@ -380,7 +382,7 @@ const updateProduct = async (req, res) => {
     if (Object.keys(data).includes("description")) {
       if (!validator.isValidValue(data.description) || !isNaN(data.description)) {
         return res
-          .status(400)
+          .status(400) 
           .send({ status: false, message: "description is not valid" });
       }
     }
@@ -388,7 +390,7 @@ const updateProduct = async (req, res) => {
     if (Object.keys(data).includes("price")) {
       if (!validator.isValidNumber(data.price) || data.price < 0) {
         return res
-          .status(400)
+          .status(400)   
           .send({ status: false, message: "price is not valid" });
       }
     }
@@ -476,9 +478,6 @@ const updateProduct = async (req, res) => {
       }
 
       if (Array.isArray(sizesArray)) {
-        // delete data.availableSizes
-        // data["$set"]={}
-        //data["$set"]["availableSizes"] = [...new Set(sizesArray)];
         data["availableSizes"] = [...new Set(sizesArray)];
       }
     }
@@ -506,8 +505,6 @@ const updateProduct = async (req, res) => {
         .send({ status: false, message: "Product Image can not be updated" });
       }
     }
-
-console.log(data)
 
     let updateData = await productModel.findOneAndUpdate({ _id: productId, isDeleted: false },data,{ new: true });
 
